@@ -136,8 +136,9 @@ export default {
                 formData.append(prop, val)
             }
 
-            firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-                fetch('https://example.com/profile/avatar', {
+            firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+            .then(idToken => {
+                return fetch('http://localhost:8000/' , {
                     method: 'POST',
                     headers:  new Headers({
                         'Authorization': 'Bearer ' + idToken //,
@@ -146,30 +147,26 @@ export default {
                     body: formData
                 
                 })
-                .then(response => {
-                    if(response.ok) {
-                        // workout added succesfully
-                        router.push({name:'mytracks'})
-                    }
-                    else {
-                        response.json().then(json => {
-                            //get error message
-                            console.log(json)
-                        })
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error)
-                    // show error on ui
-                    
+            })
+            .then(response => {
+                console.log(response)
+                if (response.ok) {
+                    // workout added succesfully    
+                    router.push({name:'mytracks'})
+                }
+                else {
+                    response.json().then(json => {
+                        //get error message
+                        console.log(json)
                     })
-
-
-                }).catch(function(error) {
-                    console.error(error)
-                });
-
-
+                    .catch(error => console.log(error))
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error)
+                // show error on ui
+                
+            })
 
         }
     },
