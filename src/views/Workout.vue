@@ -1,13 +1,13 @@
 <template>
-    <h1>Reitti {{ track_id }}</h1>
+    <h1>Reitti {{ workout_id }}</h1>
 </template>
 
 <script>
 export default {
-    name: 'Track',
+    name: 'Workout',
     data() {
         return {
-            track_id: this.$route.params.track_id
+            workout_id: this.$route.params.workout_id
         }
     }
 }

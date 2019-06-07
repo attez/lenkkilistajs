@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Tracks from './views/Tracks'
-import AddTrack from './views/AddTrack'
-import Track from './views/Track'
+import Workouts from './views/Workouts'
+import AddWorkout from './views/AddWorkout'
+import Workout from './views/Workout'
 
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
@@ -21,21 +21,21 @@ const router = new Router({
     
     },
     {
-      path: '/mytracks',
-      name: 'mytracks',
-      component: Tracks,
+      path: '/workouts',
+      name: 'workouts',
+      component: Workouts,
       meta: { requiresAuth: true }
     },
     {
-      path: '/addtrack',
-      name: 'addtrack',
-      component: AddTrack,
+      path: '/addworkout',
+      name: 'addworkout',
+      component: AddWorkout,
       meta: { requiresAuth: true }
     },
     {
-      path: '/track/:track_id',
-      name: 'track',
-      component: Track,
+      path: '/workout/:workout_id',
+      name: 'workout',
+      component: Workout,
       meta: { requiresAuth: true }
 
     }

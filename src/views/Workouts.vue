@@ -16,7 +16,7 @@
 <script>
 import WorkoutInfo from '@/components/WorkoutInfo'
 export default {
-    name: 'Tracks',
+    name: 'Workouts',
     data() {
         return {
             workouts:[{id:1, name:'Eka harjoitus', sport:'Hiihto', description: 'Kuvaus', start_time: new Date()}]
