@@ -5,9 +5,12 @@ import router from './router'
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import * as firebase from "firebase/app"
 import 'firebase/auth'
+import FormatDate from '@/filters/date'
 
 
 Vue.config.productionTip = false
+
+Vue.filter('date', FormatDate)
 
 
 const firebaseConfig = {
@@ -21,7 +24,6 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
 
 
 
@@ -39,4 +41,3 @@ const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
   unsubscribe() // stop listening onAuthState changes
 })
  
-
