@@ -6,6 +6,7 @@ import router from './router'
 import * as firebase from "firebase/app"
 import 'firebase/auth'
 import FormatDate from '@/filters/date'
+import bus from '@/EventBus'
 
 
 Vue.config.productionTip = false
@@ -31,7 +32,7 @@ firebase.initializeApp(firebaseConfig);
 const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
   console.log("AUTH ID CHANGED")
   console.log(user)
-  
+  // bus.$emit('userChanged', user) // there is now vue component listerning events at this point
   new Vue({
     router,
     render: h => h(App)

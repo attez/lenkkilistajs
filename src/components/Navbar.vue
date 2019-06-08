@@ -26,7 +26,7 @@ export default {
     name: 'Navbar',
     data () {
         return {
-            isAuthtenticated: false
+            isAuthtenticated: !!firebase.auth().currentUser
 
         }
     },
@@ -38,6 +38,7 @@ export default {
         }
     },
     created(){
+        //console.log("autentikoitu ", this.isAuthtenticated)
         bus.$on('userChanged', user => { 
             this.isAuthtenticated = !!user
         })
