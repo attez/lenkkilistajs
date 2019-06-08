@@ -15,6 +15,12 @@
 
 <script>
 import WorkoutInfo from '@/components/WorkoutInfo'
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
+
+console.log("workout run")
+let db = null
 export default {
     name: 'Workouts',
     data() {
@@ -25,6 +31,26 @@ export default {
     },
     components: {
         WorkoutInfo
+    },
+    methods: {
+        loadWorkouts() {
+            db.collection("workouts").where("uid", "==", firebase.auth().currentUser.uid)
+                .get()
+                .then(function(querySnapshot) {
+                    querySnapshot.forEach(function(doc) {
+                        // doc.data() is never undefined for query doc snapshots
+                        console.log(doc.id, " => ", doc.data())
+                    });
+                })
+                .catch(function(error) {
+                    console.log("Error getting documents: ", error)
+                })
+
+        }
+    },
+    created() {
+        db = firebase.firestore();
+        this.loadWorkouts()
     }
 }
 </script>
