@@ -6,12 +6,15 @@ import router from './router'
 import * as firebase from "firebase/app"
 import 'firebase/auth'
 import FormatDate from '@/filters/date'
-import bus from '@/EventBus'
+import {meterToKm, round} from '@/filters/format'
+//import bus from '@/EventBus'
 
 
 Vue.config.productionTip = false
 
 Vue.filter('date', FormatDate)
+Vue.filter('meterToKm', meterToKm)
+Vue.filter('round', round)
 
 
 const firebaseConfig = {
@@ -22,8 +25,9 @@ const firebaseConfig = {
   storageBucket: "lenkkilista.appspot.com",
   messagingSenderId: "947864487154",
   appId: "1:947864487154:web:b070335b278d6d7f"
-};
+}
 // Initialize Firebase
+console.log("INIT FIREBASE")
 firebase.initializeApp(firebaseConfig);
 
 
