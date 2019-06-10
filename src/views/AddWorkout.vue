@@ -152,7 +152,7 @@ export default {
                 console.log(response)
                 if (response.ok) {
                     // workout added succesfully    
-                    router.push({name:'mytracks'})
+                    router.push({name:'workouts'})
                 }
                 else {
                     response.json().then(json => {
