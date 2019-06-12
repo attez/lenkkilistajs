@@ -40,8 +40,7 @@ export default {
             url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
             zoom: 0,
             center: [0, 0], 
-            bounds: latLngBounds([[this.workout.bounds.min.latitude, this.workout.bounds.min.longitude],
-                                  [this.workout.bounds.max.latitude, this.workout.bounds.max.longitude]]),
+            bounds: this.getBounds(),
             options:{attributionControl:true},
             polyline: {color:'green'},
         }
@@ -64,6 +63,13 @@ export default {
             // Bounds are now calculated on the server.
             //console.log("onTrackAdded ran")
             //this.bounds = this.$refs.trackGroup.mapObject.getBounds()
+        },
+        getBounds() {
+            if (!this.workout || !this.workout.bounds) {
+                return latLngBounds()
+            }
+            return latLngBounds([[this.workout.bounds.min.latitude, this.workout.bounds.min.longitude],
+                                 [this.workout.bounds.max.latitude, this.workout.bounds.max.longitude]])
         }
 
     },
