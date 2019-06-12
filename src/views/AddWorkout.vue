@@ -59,7 +59,6 @@
 </template>
 
 <script>
-import router from '@/router'
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 
@@ -152,7 +151,7 @@ export default {
                 console.log(response)
                 if (response.ok) {
                     // workout added succesfully    
-                    router.push({name:'workouts'})
+                    this.$router.push({name:'workouts'})
                 }
                 else {
                     response.json().then(json => {
