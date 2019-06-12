@@ -10,8 +10,10 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "firebase": "^6.1.0",
+    "leaflet": "^1.5.1",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
+    "vue2-leaflet": "^2.1.1",
     "vuetify": "^1.5.5"
   },
   "devDependencies": {

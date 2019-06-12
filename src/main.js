@@ -7,6 +7,8 @@ import * as firebase from "firebase/app"
 import 'firebase/auth'
 import FormatDate from '@/filters/date'
 import {meterToKm, round} from '@/filters/format'
+import { Icon }  from 'leaflet'
+import 'leaflet/dist/leaflet.css'
 //import bus from '@/EventBus'
 
 
@@ -45,4 +47,15 @@ const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
 
   unsubscribe() // stop listening onAuthState changes
 })
+
+
+// LEAFLET:  https://korigan.github.io/Vue2Leaflet/#/quickstart.md
+// this part resolve an issue where the markers would not appear
+delete Icon.Default.prototype._getIconUrl;
+
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+});
  

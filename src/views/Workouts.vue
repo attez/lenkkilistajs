@@ -19,13 +19,12 @@ import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 
-console.log("workout run")
 let db = null
 export default {
     name: 'Workouts',
     data() {
         return {
-            workouts:[{id:1, name:'Eka harjoitus', sport:'Hiihto', description: 'Kuvaus', start_time: new Date()}]
+            workouts: []//[{id:1, name:'Eka harjoitus', sport:'Hiihto', description: 'Kuvaus', start_time: new Date()}]
 
         }
     },
@@ -36,13 +35,14 @@ export default {
         loadWorkouts() {
             db.collection("workouts").where("uid", "==", firebase.auth().currentUser.uid)
                 .get()
-                .then(function(querySnapshot) {
-                    querySnapshot.forEach(function(doc) {
+                .then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
                         // doc.data() is never undefined for query doc snapshots
                         console.log(doc.id, " => ", doc.data())
+                        this.workouts.push({id:doc.id, ...doc.data()})
                     });
                 })
-                .catch(function(error) {
+                .catch(error => {
                     console.log("Error getting documents: ", error)
                 })
 
