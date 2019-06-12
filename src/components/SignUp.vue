@@ -23,6 +23,7 @@
 import * as firebase from "firebase/app"
 import "firebase/auth"
 import bus from '@/EventBus'
+import router from '@/router'
 
 export default {
     name: 'SignUp',
@@ -51,13 +52,13 @@ export default {
             if(!this.$refs.form.validate()) {
                 return }
             this.signUpUser(this.email, this.password)
-            // push to routes page?/ same page
             console.log(`User registeration with email: ${this.email}, password: ${this.password} and password confirmation: ${this.passwordConfirm}`)
         },
         signUpUser(email, password) {
             firebase.auth().createUserWithEmailAndPassword(email, password).then(user => {
                 console.log(user)
                 bus.$emit('userChanged', user)
+                this.$router.push({name:'workouts'})
             })
             .catch(error=> {
                 console.log(error)
