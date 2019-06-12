@@ -23,7 +23,6 @@
 import * as firebase from "firebase/app"
 import "firebase/auth"
 import bus from '@/EventBus'
-import router from '@/router'
 
 export default {
     name: 'SignUp',

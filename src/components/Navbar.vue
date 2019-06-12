@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import router from '@/router'
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import bus from '@/EventBus'
@@ -34,7 +33,7 @@ export default {
         onSignOut () {
             firebase.auth().signOut()
             bus.$emit('userChanged', null)
-            router.push('/')
+            this.$router.push('/')
         }
     },
     created(){
