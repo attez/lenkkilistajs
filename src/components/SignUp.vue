@@ -1,6 +1,6 @@
 <template>
-    <v-card class="elevation-6"> <!--shadow-->
-    <v-card-title primary-title class="headline">Rekisteröityminen</v-card-title>
+    <v-card class="elevation-4"> <!--shadow-->
+    <v-card-title primary-title class="headline">Rekisteröidy</v-card-title>
         <v-form @submit.prevent="onSignup" ref="form">
             <v-card-text>
                     <v-alert v-model="signUpError" type="error" outline>

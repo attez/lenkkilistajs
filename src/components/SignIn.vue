@@ -1,5 +1,5 @@
 <template>
-    <v-card class="elevation-6"> <!--shadow-->
+    <v-card class="elevation-4"> <!--shadow-->
     <v-card-title primary-title class="headline">Kirjaudu sisään</v-card-title>
         <v-form @submit.prevent="onSignIn" ref="form">
             <v-card-text>

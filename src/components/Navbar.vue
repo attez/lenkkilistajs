@@ -6,7 +6,7 @@
         </v-toolbar-title>
       
         <v-toolbar-items>
-            <v-btn flat :to="{name: 'workouts'}"> Omat harjoitukset</v-btn>
+            <v-btn v-if="isAuthtenticated" flat :to="{name: 'workouts'}"> Omat harjoitukset</v-btn>
         </v-toolbar-items>
         <v-spacer></v-spacer>
         <v-btn v-if="isAuthtenticated" flat @click="onSignOut"> Kirjaudu ulos

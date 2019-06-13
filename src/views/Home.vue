@@ -1,10 +1,14 @@
 <template>
-<v-container>
+<v-container grid-list-lg>
   <v-layout column>
-    <v-flex xs-12> <AppDescription/> </v-flex>
-    <v-flex v-if="!isAuthtenticated" xs-12> <SignUp/> </v-flex>
-    <v-flex v-if="!isAuthtenticated" xs-12> <SignIn/> </v-flex>
+    <v-flex> <AppDescription/> </v-flex>
+    <v-layout column v-if="!isAuthtenticated" style="max-width:600px; width:100%; " align-self-center grow>
+      <v-flex> <SignIn/> </v-flex>
+      <v-flex> <SignUp/> </v-flex>
+    </v-layout>
+
     
+     
   </v-layout>
 </v-container>
 </template>
