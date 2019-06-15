@@ -50,7 +50,7 @@ export default {
         },
         signInUser(email, password) {
             firebase.auth().signInWithEmailAndPassword(email, password).then(user => {
-                console.log(user)
+                // console.log(user)
                 bus.$emit('userChanged', user)
                 this.$router.push({name:'workouts'})
             })

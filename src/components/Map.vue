@@ -56,7 +56,6 @@ export default {
             this.center = center;
         },
         boundsUpdated (bounds) {
-            console.log("Bounds updated " + bounds)
             this.bounds = bounds;
         },
         onTrackAdded() {
@@ -76,20 +75,16 @@ export default {
     mounted () {
       this.$nextTick(() => {
         let lmap = this.$refs.map.mapObject
-        //console.log(lmap)
+        // Leaflet map methods can be accessed here...
         if (lmap && lmap.attributionControl) {
             lmap.attributionControl.setPrefix('') // removes default 'leaflet' attribution prefix text
         } 
         
       })
-      console.log("WORKOUT")
-      console.log(this.workout)
     }
 }
 </script>
 
-
 <style>
-
 
 </style>

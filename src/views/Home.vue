@@ -6,9 +6,6 @@
       <v-flex> <SignIn/> </v-flex>
       <v-flex> <SignUp/> </v-flex>
     </v-layout>
-
-    
-     
   </v-layout>
 </v-container>
 </template>
@@ -21,7 +18,6 @@
   import * as firebase from 'firebase/app'
   import 'firebase/auth'
   
-
   export default {
     name: 'Home',
     components: {

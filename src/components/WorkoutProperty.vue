@@ -24,7 +24,7 @@ export default {
     methods: {
         formatTime(seconds) {
             if (!seconds) {
-                console.log('WorkoutProperty: Could not format time.')
+                console.warn('WorkoutProperty: Could not format time.')
                 return ''
             }
             let s = Math.floor( seconds % 60 )
@@ -62,7 +62,7 @@ export default {
                         break
 
                     default:
-                        console.log(`WorkoutProperty: Could not find formatter for type ${this.type}.`)
+                        console.warn(`WorkoutProperty: Could not find formatter for type ${this.type}.`)
 
                 }
 
@@ -78,4 +78,3 @@ export default {
 <style>
 
 </style>
-

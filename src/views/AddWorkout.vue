@@ -1,22 +1,20 @@
 <template>
     <v-container>
         <v-layout>
-            <v-flex xs12 sm6 offset-sm3><h1>Uusi reitti</h1></v-flex>
+            <v-flex xs12 sm6 offset-sm3><h1>Uusi harjoitus</h1></v-flex>
         </v-layout>                   
         <v-layout>
             <v-flex xs12 sm6 offset-sm3>
-                <v-form ref="form" @submit.prevent="onAddTrack">
+                <v-form ref="form" @submit.prevent="onAddWorkout">
                 
                     <v-text-field
                         name="name"
-                        label="Reitin nimi"
-                        v-model="track.name"
+                        label="Harjoituksen nimi"
+                        v-model="workout.name"
                         :rules="rules.name"
                     ></v-text-field>
-
-                   
+  
                     <!-- Let's display prettier v-btn instead of standard input file select button -->
-
                     <v-btn small class="primary" @click="onSelectFile">Valitse GPX-tiedosto</v-btn>               
                     <input
                         type="file"
@@ -25,7 +23,7 @@
                         ref="fileInput"
                         accept=".gpx"
                         @change="onFileSelected">
-                    <span v-if="track.file">{{ track.file.name }}</span>
+                    <span v-if="workout.file">{{ workout.file.name }}</span>
                     <v-alert
                         v-model="fileError"
                         type="error"
@@ -34,21 +32,20 @@
                         Valitse GPX-tiedosto.
                     </v-alert>
 
-
                     <v-select
                         :items="sports"
                         name="sport"
                         label="Laji"
-                        v-model="track.sport"
+                        v-model="workout.sport"
                     ></v-select>
                         
                     <v-textarea
                         name="description"
-                        label="Reitin kuvaus"
-                        v-model="track.description"
+                        label="Harjoituksen kuvaus"
+                        v-model="workout.description"
                     ></v-textarea>
 
-                    <v-btn class="primary" type="submit">Tallenna reitti</v-btn>
+                    <v-btn class="primary" type="submit">Tallenna harjoitus</v-btn>
 
                 
                 </v-form>
@@ -63,10 +60,10 @@ import * as firebase from 'firebase/app'
 import 'firebase/auth'
 
 export default {
-    name: 'AddTrack',
+    name: 'AddWorkout',
     data() {
         return {
-            track: {
+            workout: {
                 name:'',
                 description: '',
                 sport:'',
@@ -94,7 +91,7 @@ export default {
 
             ],
             rules: {
-                name: [v=>!!v || 'Anna reitin nimi']
+                name: [v=>!!v || 'Anna harjoituksen nimi']
             }
 
         }
@@ -108,30 +105,27 @@ export default {
             const files = event.target.files
             if (!files.length) return // event is called with empty file list if user cancels dialog after file has been chosen
             let file = files[0] // only one file accepted in file input
-            this.track.file = file
+            this.workout.file = file
             // if needed, could use here FileReader API to read the file
-            console.log(this.track.file)
+            // console.log(this.workout.file)
             this.validateFileField()
         },
-        onAddTrack() {
+        onAddWorkout() {
             //validate
             if(!this.validateFileField() || !this.$refs.form.validate()) {
-                console.log("form not valid")
+                console.log("AddWorkout: Form not valid.")
                 return
             }
-            this.saveTrack(this.track)
-
-
-            //FormData -> fetch
-            //check error and push to route page
+            this.saveWorkout(this.workout)
         },
         validateFileField() {
-            this.fileError = !this.track.file
+            this.fileError = !this.workout.file
             return !this.fileError
         },
-        saveTrack(track) { //if using vuex this function would  be placed in vuex store
+        saveWorkout(workout) { //if using vuex this function would be placed in vuex store
+            // make form data from workout object
             const formData = new FormData()
-            for (const [prop, val] of Object.entries(track)) {
+            for (const [prop, val] of Object.entries(workout)) {
                 formData.append(prop, val)
             }
 
@@ -148,33 +142,28 @@ export default {
                 })
             })
             .then(response => {
-                console.log(response)
-                if (response.ok) {
-                    // workout added succesfully    
+                if (response.ok) { // workout added succesfully  
                     this.$router.push({name:'workouts'})
                 }
-                else {
-                    response.json().then(json => {
-                        //get error message
-                        console.log(json)
+                else { // workout NOT added
+                    response.json() //get error message
+                    .then(json => {                        
+                        console.error(json)
+                        // TODO: show error from json in UI.
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => {
+                        console.error("AddWorkout: Failed to load error message.")
+                        console.log(error)
+                        })
                 }
             })
             .catch(error => {
                 console.error('Error:', error)
-                // show error on ui
+                // TODO: show generic error on UI.
                 
             })
 
         }
-    },
-    computed: {
-        
-    },
-    watch: {
-        trackSport: v=>{console.log(v)}
-        
     }
 }
 </script>

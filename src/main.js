@@ -2,7 +2,7 @@ import Vue from 'vue'
 import './plugins/vuetify'
 import App from './App.vue'
 import router from './router'
-// Firebase App (the core Firebase SDK) is always required and must be listed first
+// Firebase App (the core Firebase SDK) is always required and must be listed first before other firebase imports
 import * as firebase from "firebase/app"
 import 'firebase/auth'
 import FormatDate from '@/filters/date'

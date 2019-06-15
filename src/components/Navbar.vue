@@ -38,7 +38,7 @@ export default {
         }
     },
     created(){
-        //console.log("autentikoitu ", this.isAuthtenticated)
+        // listen log ins and outs
         bus.$on('userChanged', user => { 
             this.isAuthtenticated = !!user
         })

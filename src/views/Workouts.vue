@@ -69,15 +69,16 @@ export default {
             this.loading = true
             db.collection("workouts").where("uid", "==", firebase.auth().currentUser.uid).orderBy("start_time", "desc")
                 .get()
-                .then(querySnapshot => {
-                    querySnapshot.forEach(doc => {
+                .then(workoutsSnapshot => {
+                    workoutsSnapshot.forEach(workout => {
                         // doc.data() is never undefined for query doc snapshots
-                        console.log(doc.id, " => ", doc.data())
-                        this.workouts.push({id:doc.id, ...doc.data()})
+                        console.log(workout.id, " => ", workout.data())
+                        this.workouts.push({id: workout.id, ...workout.data()})
                     });
                 })
                 .catch(error => {
-                    console.log("Error getting documents: ", error)
+                    console.log("Error getting workouts: ", error)
+                    // TODO: show error in UI: failed to load workouts
                 })
                 .then(() => {
                     this.loading = false

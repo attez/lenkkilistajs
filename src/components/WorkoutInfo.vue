@@ -45,28 +45,11 @@ export default {
 
     },
     props: {
-        workout: null
+        workout: Object
     },
     components: {
         WorkoutProperty
     }
-    /*
-    HAHMOTELMA
-
-    1. ajankohta ja laji: aloitus, lopetus [otsikon yläpuolelle]
-    2. Otsikkko [isolla]
-    3. kuvaus
-    4. tiedot lenkistä omiin ryhmitelyihin laatikoihin
-    Miten pitkään?
-    - kestot: kokonaiskesto, josta liikkeessä (pyssädyksissä)    
-    Miten paljon?
-    - matkat: kokonaismatka ja - korkeuserot: nousua, laskua
-    Miten kovaa?
-    - nopeudet: keskinopeus, keskinopeus liikkeessä, suurin nopeus
-    
-
-    
-    */
     
 }
 </script>
@@ -76,4 +59,3 @@ export default {
         line-height: 1.1
     }
 </style>
-
