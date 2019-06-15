@@ -72,7 +72,7 @@ export default {
                 .then(workoutsSnapshot => {
                     workoutsSnapshot.forEach(workout => {
                         // doc.data() is never undefined for query doc snapshots
-                        console.log(workout.id, " => ", workout.data())
+                        // console.log(workout.id, " => ", workout.data())
                         this.workouts.push({id: workout.id, ...workout.data()})
                     });
                 })
