@@ -1,21 +1,19 @@
 <template>
-
     <v-container fluid fill-height>
         <v-layout column>
             <template v-if="workout">
-                <v-flex shrink> <h1>Reitti {{ workout_id }} - {{ workout.name }}</h1> </v-flex>
+                <v-flex shrink> <h1>{{ workout.name }}</h1> </v-flex>
                 <v-flex><Map :workout="workout"></Map></v-flex>
             </template>
         </v-layout>        
     </v-container>
-
-
 </template>
 
 <script>
 import Map from '@/components/Map'
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
+
 let db = null
 
 export default {

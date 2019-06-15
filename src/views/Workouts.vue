@@ -1,16 +1,48 @@
 <template>
-    <v-container>
-        <v-layout>
-            <v-flex xs12 sm6 offset-sm3><h1>Omat harjoitukset</h1></v-flex>
-        </v-layout>                   
+    <v-container fill-height>  
         <v-layout column>
-            <v-flex v-for="workout in workouts" :key="workout.id" xs12 sm6 offset-sm3>
-                <WorkoutInfo :workout="workout"/>
+            <!-- title, add button -->
+            <v-flex shrink>
+                <v-layout align-baseline>
+                    <h1 >Omat harjoitukset</h1>
+                    <v-btn :to="{name:'addworkout'}" fab dark color="primary"><v-icon dark>add</v-icon></v-btn>
+                </v-layout>
             </v-flex>
-        </v-layout>
+            
+            <!-- loading spinner -->
+            <v-flex d-flex v-if="loading">  
+                <v-layout  justify-center align-center >
+                    <v-flex shrink>
+                        <v-progress-circular
+                            :size="50"
+                            color="primary"
+                            indeterminate
+                            ></v-progress-circular>
+                    </v-flex>
+                </v-layout>
+            </v-flex>
 
+            <!-- contents -->            
+            <v-flex d-flex v-else>
+                <v-layout>
+                    <v-flex xs12 v-if="workouts.length === 0 " >
+                        <p>Sinulla ei ole vielä yhtään harjoitusta.</p>
+                    </v-flex>
+                    <!-- grid for workouts -->
+                    <v-flex>
+                        <v-container pa-0 fluid grid-list-md>
+                            <v-layout row wrap>
+                                <v-flex xs12 md6 v-for="workout in workouts" :key="workout.id">
+                                    <WorkoutInfo :workout="workout"/>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </v-flex>
+
+                </v-layout>
+            </v-flex>
+        </v-layout>  
     </v-container>
-
 </template>
 
 <script>
@@ -24,7 +56,8 @@ export default {
     name: 'Workouts',
     data() {
         return {
-            workouts: []//[{id:1, name:'Eka harjoitus', sport:'Hiihto', description: 'Kuvaus', start_time: new Date()}]
+            workouts: [] ,//[{id:1, name:'Eka harjoitus', sport:'Hiihto', description: 'Kuvaus', start_time: new Date()}]
+            loading: false
 
         }
     },
@@ -33,7 +66,8 @@ export default {
     },
     methods: {
         loadWorkouts() {
-            db.collection("workouts").where("uid", "==", firebase.auth().currentUser.uid)
+            this.loading = true
+            db.collection("workouts").where("uid", "==", firebase.auth().currentUser.uid).orderBy("start_time", "desc")
                 .get()
                 .then(querySnapshot => {
                     querySnapshot.forEach(doc => {
@@ -45,7 +79,9 @@ export default {
                 .catch(error => {
                     console.log("Error getting documents: ", error)
                 })
-
+                .then(() => {
+                    this.loading = false
+                })
         }
     },
     created() {

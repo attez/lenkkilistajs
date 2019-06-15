@@ -1,13 +1,13 @@
 <template>
-    <v-sheet class="pa-1" color="red lighten-4" width=140>
+    <v-sheet class="pa-1" color="primary lighten-1" width=140>
         <v-layout column align-center>
             <v-flex>
-                <v-flex class="caption font-weight-light">
+                <div class="caption font-weight-light">
                     {{ name }}
-                </v-flex>
-                <v-flex class="title">
+                </div>
+                <div class="title">
                     {{ formattedProperty.value }} {{ formattedProperty.unit }}                 
-                </v-flex>
+                </div>
             </v-flex>
         </v-layout>
     </v-sheet>
