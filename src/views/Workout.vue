@@ -31,13 +31,13 @@ export default {
         loadWorkout() {
             let workoutRef = db.collection("workouts").doc(this.workout_id)
 
-            workoutRef.get().then(doc => {
-                if (!doc.exists) {
-                    //TODO: show error: not found
-                    console.log(`Workout: No document with id ${this.workout_id} found.`)
+            workoutRef.get().then(workout => {
+                if (!workout.exists) {
+                    //TODO: show error on UI: not found
+                    console.error(`Workout: No workout with id ${this.workout_id} found.`)
                     return
                 }
-                this.workout = {id:doc.id, ...doc.data(), tracks:[]}
+                this.workout = {id: workout.id, ...workout.data(), tracks:[]}
                 
                 // get subcollection
                 return workoutRef.collection('tracks').get()
