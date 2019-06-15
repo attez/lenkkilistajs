@@ -8,11 +8,10 @@ import Workout from './views/Workout'
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 
-
 Vue.use(Router)
 
 const router = new Router({
-  //mode: history,
+  mode: history,
   routes: [
     {
       path: '/',
