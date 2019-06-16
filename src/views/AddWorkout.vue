@@ -107,8 +107,7 @@ export default {
             ],
             rules: {
                 name: [v=>!!v || 'Anna harjoituksen nimi']
-            },
-            testi: true
+            }
 
         }
     },
@@ -164,7 +163,6 @@ export default {
                             //'Content-Type': 'multipart/form-data'
                         }),
                         body: formData
-                    
                     })
                 })
                 .then(response => {
