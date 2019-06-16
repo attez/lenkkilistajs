@@ -156,7 +156,7 @@ export default {
 
                 firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
                 .then(idToken => {
-                    return fetch(process.env.VUE_APP_API_URL, {
+                    return fetch(process.env.VUE_APP_API_URL + 'addworkout/', {
                         method: 'POST',
                         headers:  new Headers({
                             'Authorization': 'Bearer ' + idToken //,
