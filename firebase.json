@@ -12,12 +12,12 @@
     ],
     "rewrites": [
       {
-        "source": "**",
-        "destination": "/index.html"
+        "source": "/api/addworkout/",
+        "function": "add_workout"
       },
       {
-        "source": "/api/addworkout",
-        "function": "add_workout"
+        "source": "**",
+        "destination": "/index.html"
       }
     ]
   }
