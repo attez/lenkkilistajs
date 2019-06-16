@@ -5,7 +5,14 @@
         </v-layout>                   
         <v-layout>
             <v-flex xs12 sm6 offset-sm3>
-                <v-form ref="form" @submit.prevent="onAddWorkout">
+                <v-alert
+                    v-model="errors.add.show"
+                    type="error"
+                    outline
+                    >
+                    {{errors.add.message}}
+                 </v-alert>
+                <v-form ref="form" @submit.prevent="onAddWorkout">   
                 
                     <v-text-field
                         name="name"
@@ -25,11 +32,11 @@
                         @change="onFileSelected">
                     <span v-if="workout.file">{{ workout.file.name }}</span>
                     <v-alert
-                        v-model="fileError"
+                        v-model="errors.file.show"
                         type="error"
                         outline
                         >
-                        Valitse GPX-tiedosto.
+                        {{ errors.file.message }}
                     </v-alert>
 
                     <v-select
@@ -69,8 +76,16 @@ export default {
                 sport:'',
                 file: null,
             },
-
-            fileError: false,
+            errors: {
+                add: {
+                    show:false,
+                    message:''
+                },
+                file: {
+                    show: false,
+                    message: 'Valitse GPX-tiedosto.' 
+                }
+            },
             sports: [
                 {text:'[Ei lajia]', value: ''},
                 'Alamäkiluistelu',
@@ -92,7 +107,8 @@ export default {
             ],
             rules: {
                 name: [v=>!!v || 'Anna harjoituksen nimi']
-            }
+            },
+            testi: true
 
         }
     },
@@ -111,58 +127,77 @@ export default {
             this.validateFileField()
         },
         onAddWorkout() {
+            this.errors.add.show = false
             //validate
             if(!this.validateFileField() || !this.$refs.form.validate()) {
                 console.log("AddWorkout: Form not valid.")
                 return
             }
             this.saveWorkout(this.workout)
-        },
-        validateFileField() {
-            this.fileError = !this.workout.file
-            return !this.fileError
-        },
-        saveWorkout(workout) { //if using vuex this function would be placed in vuex store
-            // make form data from workout object
-            const formData = new FormData()
-            for (const [prop, val] of Object.entries(workout)) {
-                formData.append(prop, val)
-            }
-
-            firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-            .then(idToken => {
-                return fetch('http://localhost:8000/' , {
-                    method: 'POST',
-                    headers:  new Headers({
-                        'Authorization': 'Bearer ' + idToken //,
-                        //'Content-Type': 'multipart/form-data'
-                    }),
-                    body: formData
-                
-                })
-            })
-            .then(response => {
-                if (response.ok) { // workout added succesfully  
-                    this.$router.push({name:'workouts'})
-                }
-                else { // workout NOT added
-                    response.json() //get error message
-                    .then(json => {                        
-                        console.error(json)
-                        // TODO: show error from json in UI.
-                    })
-                    .catch(error => {
-                        console.error("AddWorkout: Failed to load error message.")
-                        console.log(error)
-                        })
-                }
+            .then(message => {
+                console.log(message)
+                this.$router.push({name:'workouts'})
             })
             .catch(error => {
-                console.error('Error:', error)
-                // TODO: show generic error on UI.
-                
+                console.error(error)
+                this.errors.add.message = error.message
             })
+        },
+        validateFileField() {
+            this.errors.file.show = !this.workout.file
+            return !this.errors.file.show
+        },
+        saveWorkout(workout) { //if using vuex this function would be placed in vuex store
+            return new Promise((resolve, reject) => {
+                // make form data from workout object
+                const formData = new FormData()
+                for (const [prop, val] of Object.entries(workout)) {
+                    formData.append(prop, val)
+                }
 
+                firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+                .then(idToken => {
+                    return fetch(process.env.VUE_APP_API_URL, {
+                        method: 'POST',
+                        headers:  new Headers({
+                            'Authorization': 'Bearer ' + idToken //,
+                            //'Content-Type': 'multipart/form-data'
+                        }),
+                        body: formData
+                    
+                    })
+                })
+                .then(response => {
+                    if (response.ok) { // workout added succesfully  
+                        resolve("Workout added.")
+                    }
+                    else { // workout NOT added
+                        response.json() //get error message
+                        .then(json => {                        
+                            reject(new Error(json.message))
+                        })
+                        .catch(() => {
+                            console.log("AddWorkout: Failed to add workout. No json error message.")
+                            reject(new Error("Harjoituksen lisääminen epäonnistui."))
+                            })
+                    }
+                })
+                .catch(error => {
+                     // TODO: modify or extend error: failed to add workout, network error
+                    reject(error)
+                    
+                })
+            })
+        }
+    },
+    watch: {
+        'errors.add.message' (msg) {
+            this.errors.add.show = !!msg
+        },
+        'errors.add.show' (show) {
+            if (!show) {
+                this.errors.add.message = null
+            }
         }
     }
 }
