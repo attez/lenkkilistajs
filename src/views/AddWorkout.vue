@@ -19,10 +19,11 @@
                         label="Harjoituksen nimi"
                         v-model="workout.name"
                         :rules="rules.name"
+                        :disabled="loading"
                     ></v-text-field>
   
                     <!-- Let's display prettier v-btn instead of standard input file select button -->
-                    <v-btn small class="primary" @click="onSelectFile">Valitse GPX-tiedosto</v-btn>               
+                    <v-btn :disabled="loading" small class="primary" @click="onSelectFile">Valitse GPX-tiedosto</v-btn>               
                     <input
                         type="file"
                         name="file"
@@ -44,16 +45,19 @@
                         name="sport"
                         label="Laji"
                         v-model="workout.sport"
+                        :disabled="loading"
                     ></v-select>
                         
                     <v-textarea
                         name="description"
                         label="Harjoituksen kuvaus"
                         v-model="workout.description"
+                        :rules="rules.description"
+                        :counter="descriptionMaxLength"
+                        :disabled="loading"
                     ></v-textarea>
 
-                    <v-btn class="primary" type="submit">Tallenna harjoitus</v-btn>
-
+                    <v-btn :loading="loading" class="primary" type="submit">Tallenna harjoitus</v-btn>
                 
                 </v-form>
             </v-flex>
@@ -75,7 +79,10 @@ export default {
                 description: '',
                 sport:'',
                 file: null,
+
             },
+            descriptionMaxLength: 1000,
+            loading:false,
             errors: {
                 add: {
                     show:false,
@@ -106,7 +113,9 @@ export default {
 
             ],
             rules: {
-                name: [v=>!!v || 'Anna harjoituksen nimi']
+                name: [v=>!!v || 'Anna harjoituksen nimi.',
+                    v => v.length <= 100 || 'Liian pitkä nimi.'],
+                description: [v => v.length <= this.descriptionMaxLength || 'Liian pitkä kuvaus.']
             }
 
         }
@@ -126,12 +135,13 @@ export default {
             this.validateFileField()
         },
         onAddWorkout() {
-            this.errors.add.show = false
+            this.errors.add.show = false // hide old error message
             //validate
             if(!this.validateFileField() || !this.$refs.form.validate()) {
                 console.log("AddWorkout: Form not valid.")
                 return
             }
+            this.loading = true
             this.saveWorkout(this.workout)
             .then(message => {
                 console.log(message)
@@ -141,6 +151,7 @@ export default {
                 console.error(error)
                 this.errors.add.message = error.message
             })
+            .then(()=> {this.loading = false})
         },
         validateFileField() {
             this.errors.file.show = !this.workout.file
