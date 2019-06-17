@@ -6,7 +6,7 @@
                 <router-link :to="{name: 'workout', params: {workout_id: workout.id } }">
                     <h2 class="d-inline" style="vertical-align: middle">{{ workout.name }}</h2>
                 </router-link>
-                <v-chip small disabled color="accent" dark class="white--text">{{workout.sport}}</v-chip>
+                <v-chip v-if="workout.sport" small disabled color="accent" dark class="white--text">{{workout.sport}}</v-chip>
             </div>
             <p>{{ workout.description }}</p>
             <h4>Miten pitkään?</h4>
