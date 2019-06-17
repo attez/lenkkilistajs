@@ -6,14 +6,14 @@
                     <v-alert v-model="signUpError" type="error" outline>
                         {{ signUpErrorMessage }}
                     </v-alert>
-                    <v-text-field prepend-icon="person" name="login" label="Sähköposti" type="email" v-model="email" :rules="rules.email"></v-text-field>
-                    <v-text-field prepend-icon="lock" name="password" label="Salasana" type="password" v-model="password" :rules="[rules.emptyPassword]"></v-text-field>
-                    <v-text-field prepend-icon="lock" name="passwordConfirm" label="Salasana uudelleen" type="password" v-model="passwordConfirm" :rules="[rules.emptyPassword, passwordsEqual]"></v-text-field>
+                    <v-text-field :disabled="loading" prepend-icon="person" name="login" label="Sähköposti" type="email" v-model="email" :rules="rules.email"></v-text-field>
+                    <v-text-field :disabled="loading" prepend-icon="lock" name="password" label="Salasana" type="password" v-model="password" :rules="[rules.emptyPassword]"></v-text-field>
+                    <v-text-field :disabled="loading" prepend-icon="lock" name="passwordConfirm" label="Salasana uudelleen" type="password" v-model="passwordConfirm" :rules="[rules.emptyPassword, passwordsEqual]"></v-text-field>
                 
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" type="submit">Rekisteröidy</v-btn>
+                <v-btn :loading="loading" color="primary" type="submit">Rekisteröidy</v-btn>
             </v-card-actions>
         </v-form>
     </v-card>
@@ -41,7 +41,8 @@ export default {
                 emptyPassword: 
                     v => !!v || 'Salasana vaaditaan'
                 //passwordsEqual must be computed property so that if first field is changed the second field is re-validated
-            }
+            },
+            loading: false
 
         }
     },
@@ -50,10 +51,14 @@ export default {
             this.setError(null)
             if(!this.$refs.form.validate()) {
                 return }
+            this.loading = true
             this.signUpUser(this.email, this.password)
+            .then(() => {
+                this.loading = false
+            })
         },
         signUpUser(email, password) {
-            firebase.auth().createUserWithEmailAndPassword(email, password).then(user => {
+            return firebase.auth().createUserWithEmailAndPassword(email, password).then(user => {
                 // console.log(user)
                 bus.$emit('userChanged', user)
                 this.$router.push({name:'workouts'})
