@@ -58,7 +58,7 @@ export default {
                         break
                     case 'speed':
                         unit = 'km/h'
-                        value = (this.value * 3.6).tgitoFixed(1) // (m/s) to (km/h)
+                        value = (this.value * 3.6).toFixed(1) // (m/s) to (km/h)
                         break
 
                     default:
