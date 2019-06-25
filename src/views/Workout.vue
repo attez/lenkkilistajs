@@ -61,6 +61,7 @@ export default {
             })
 
         },
+        //converts Firestore GeoPoints to arrays
         convertGeoPoints(geoPoints) {
             console.log("converting geopoints")
             let latLongs = geoPoints.map(point => {

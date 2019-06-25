@@ -22,6 +22,7 @@ export default {
         }
     },
     methods: {
+        // Formats time as hh:mm:ss
         formatTime(seconds) {
             if (!seconds) {
                 console.warn('WorkoutProperty: Could not format time.')

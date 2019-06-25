@@ -1,3 +1,9 @@
+/** Vue filter for date formatting.
+ * 
+ * @ param value {string | firebase.firestore.Timestamp } Input date.
+ * @ return {string} Date string in fi-FI locale.
+ *
+*/
 import * as firebase from 'firebase/app'
 import 'firebase/firestore'
 export default (value) => {

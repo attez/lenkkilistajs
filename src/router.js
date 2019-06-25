@@ -43,7 +43,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth) // if any of the route object in the path requested requires auth then true is returned
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth) // if any of the route objects in the path requested requires auth then true is returned
   const isAuthenticated = !!firebase.auth().currentUser
   if (requiresAuth && !isAuthenticated) {
     next('/')
